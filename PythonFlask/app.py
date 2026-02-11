@@ -19,7 +19,8 @@ app = Flask(__name__)
 app.secret_key = "changez-moi-en-production"
 
 
-# Dossier racine : le Bureau. Les dossiers présents sur le bureau sont explorables.
+# Dossier racine : le Bureau de la machine qui exécute Flask.
+# Chaque personne qui lance l'app voit donc SON propre Bureau, pas celui du propriétaire du code.
 IMAGE_ROOT = os.path.expanduser("~/Desktop")
 ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
 
