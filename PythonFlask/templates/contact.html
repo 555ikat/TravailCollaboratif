@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Contact — Gabrielle Segers{% endblock %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+{% endblock %}
+
+{% block content %}
+<article class="page-content contact-page">
+    <h1>Contact</h1>
+    <p class="lead">Une question, une opportunité d’alternance ou envie d’échanger ? Envoyez-moi un message.</p>
+
+    <p class="contact-coords">
+        <strong>Gabrielle Segers</strong><br>
+        06 22 12 83 57 · <a href="mailto:lilyrose62340@gmail.com">lilyrose62340@gmail.com</a><br>
+        62610 Rodelinghem — Permis B, véhiculée
+    </p>
+
+    <div class="contact-map-wrapper">
+        <h2 class="contact-map-title">Ma localisation</h2>
+        <div id="contact-map" class="contact-map" aria-label="Carte : Rodelinghem, 62610"></div>
+        <p class="contact-map-caption">
+            <a href="https://www.openstreetmap.org/?mlat=50.837&amp;mlon=1.945#map=13/50.837/1.945" target="_blank" rel="noopener">Ouvrir dans OpenStreetMap</a>
+        </p>
+    </div>
+
+    <form class="contact-form" action="{{ url_for('contact') }}" method="post">
+        <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" id="name" name="name" required placeholder="Votre nom">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="votre@email.fr">
+        </div>
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required placeholder="Votre message…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
+</article>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script>
+(function () {
+  var mapEl = document.getElementById("contact-map");
+  if (!mapEl) return;
+  var center = [50.837, 1.945];
+  var map = L.map("contact-map").setView(center, 13);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>",
+    maxZoom: 19
+  }).addTo(map);
+  L.marker(center).addTo(map).bindPopup("<strong>Rodelinghem</strong><br>62610");
+})();
+    </script>
+{% endblock %}

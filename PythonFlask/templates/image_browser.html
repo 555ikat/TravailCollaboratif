@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Explorateur d'images — Gabrielle Segers{% endblock %}
+
+{% block content %}
+<article class="page-content image-browser">
+    <h1>Explorateur d'images</h1>
+    <p class="lead">
+        Parcours les dossiers d'images configurés sur mon ordinateur et affiche les photos en grand.
+    </p>
+
+    <div class="image-browser-layout">
+        <aside class="image-browser-sidebar">
+            <h2>Dossiers</h2>
+            <ul class="image-browser-dirs">
+                {% if parent_rel is not none %}
+                    <li><a href="{{ url_for('image_browser', p=parent_rel) }}">⬆️ Dossier parent</a></li>
+                {% endif %}
+                {% for d in subdirs %}
+                    <li>
+                        <a href="{{ url_for('image_browser', p=(rel_path ~ '/' if rel_path else '') ~ d) }}">{{ d }}</a>
+                    </li>
+                {% else %}
+                    <li><em>Aucun sous-dossier</em></li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        <section class="image-browser-main">
+            <h2>Images</h2>
+
+            {% if images %}
+                <div class="image-grid">
+                    {% for img in images %}
+                        {% set img_rel = (rel_path ~ '/' if rel_path else '') ~ img %}
+                        <button
+                            class="image-thumb"
+                            type="button"
+                            data-src="{{ url_for('image_file', p=img_rel) }}"
+                            title="Afficher {{ img }}"
+                        >
+                            <img src="{{ url_for('image_file', p=img_rel) }}" alt="{{ img }}">
+                        </button>
+                    {% endfor %}
+                </div>
+
+                <div class="image-viewer" id="image-viewer">
+                    <p class="image-viewer-placeholder">
+                        Clique sur une image pour l'agrandir.
+                    </p>
+                    <img id="image-viewer-img" alt="" hidden>
+                </div>
+            {% else %}
+                <p>Aucune image dans ce dossier.</p>
+            {% endif %}
+        </section>
+    </div>
+</article>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+(function () {
+  var thumbs = document.querySelectorAll(".image-thumb");
+  var viewer = document.getElementById("image-viewer");
+  var img = document.getElementById("image-viewer-img");
+  var placeholder = viewer && viewer.querySelector(".image-viewer-placeholder");
+
+  if (!thumbs.length || !viewer || !img) return;
+
+  thumbs.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var src = btn.getAttribute("data-src");
+      if (!src) return;
+      img.src = src;
+      img.hidden = false;
+      if (placeholder) {
+        placeholder.style.display = "none";
+      }
+      img.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  });
+})();
+    </script>
+{% endblock %}
+

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Accueil — Gabrielle Segers{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1 class="hero-title">Bonjour, je suis <em>Gabrielle Segers</em></h1>
+    <p class="hero-subtitle">Étudiante en Webmaster & métiers de l’internet — je recherche une alternance 2025 en communication digitale ou design graphique.</p>
+    <a href="{{ url_for('about') }}" class="btn btn-primary">Découvrir mon profil</a>
+    <a href="{{ url_for('contact') }}" class="btn btn-secondary">Me contacter</a>
+</section>
+
+<section class="intro">
+    <h2>Bienvenue</h2>
+    <p>Rythme souhaité : 1 semaine en formation / 1 semaine en entreprise. Communication sur les réseaux sociaux, création de contenus visuels, relation client et travail en équipe font partie de mon quotidien. N’hésitez pas à parcourir mon parcours et à me contacter pour échanger.</p>
+</section>
+{% endblock %}
